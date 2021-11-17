@@ -1,0 +1,6 @@
+main : fr.sweeftyz.patate.Main
+version: 1.0.0
+name: SacApatatev2
+commands:
+  bag:
+    description: Permet de donner un sac a patate
