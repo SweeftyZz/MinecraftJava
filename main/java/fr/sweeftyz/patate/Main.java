@@ -1,6 +1,7 @@
 package fr.sweeftyz.patate;
 
 import fr.sweeftyz.patate.commands.BagCommand;
+import fr.sweeftyz.patate.discord.BotM;
 import fr.sweeftyz.patate.listeners.BagListeners;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -17,6 +18,7 @@ public class Main extends JavaPlugin {
         getServer().getConsoleSender().sendMessage("Activation...");
         initcommands();
         initlisteners();
+        new BotM(this);
 
     }
 

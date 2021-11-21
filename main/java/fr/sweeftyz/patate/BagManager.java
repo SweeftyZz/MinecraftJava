@@ -24,6 +24,8 @@ public class BagManager {
 
     public ItemStack bag;
 
+    private boolean isCompleted;
+
 
 
     public BagManager(String name, int level, String id){
@@ -55,21 +57,26 @@ public class BagManager {
         if (player.getInventory().contains(Material.POTATO_ITEM) || player.getInventory().contains(Material.POTATO)) {
             if (num < 0) {
                 num = 0;
-            } else if ((this.potatoes + num) > maxslot) {
-                player.sendMessage(ChatColor.GREEN + "Vous avez reçu " + num + "patates !(" + this.potatoes + ")");
-                int themore = (this.potatoes + num) - maxslot;
-                this.potatoes += themore;
-                item.setAmount(themore);
-                player.getInventory().remove(item);
-            } else if (this.potatoes == maxslot) {
-                player.sendMessage(ChatColor.RED + "Vous avez atteint la limite ! Améliorez votre sac pour avoir un espace supplémentaire !");
-
-            } else {
-                this.potatoes += num;
-                player.sendMessage(ChatColor.GREEN + "Vous avez reçu " + num + "patates !(" + this.potatoes + ")");
-                item.setAmount(num);
-                player.getInventory().remove(item);
             }
+            if ((this.potatoes + num) > maxslot) {
+                int added = (this.potatoes + num) -maxslot;
+                player.sendMessage(ChatColor.GREEN + "Vous avez reçu " + added + "patates !(" + this.potatoes + ")");
+                this.potatoes += added;
+                item.setAmount(added);
+                AddAction(player);
+                return;
+            }
+
+
+                if (this.potatoes == maxslot) {
+                player.sendMessage(ChatColor.RED + "Vous avez atteint la limite ! Améliorez votre sac pour avoir un espace supplémentaire !");
+                return;
+            }
+                this.potatoes += num;
+                player.sendMessage(ChatColor.GREEN + "Votre sac a reçu " + num + "patates !(" + this.potatoes + ")");
+                item.setAmount(num);
+                AddAction(player);
+
         }else{
             player.sendMessage(ChatColor.RED + "Vous n'avez pas de patate sur vous !");
         }
@@ -98,6 +105,33 @@ public class BagManager {
             item.setAmount(num);
             player.getInventory().addItem(item);
         }
+
+    }
+
+    public void AddAction(Player player){
+        isCompleted = false;
+        player.getInventory().all(this.item).forEach((key, value) -> {
+            if(isCompleted){
+                return;
+            }
+            System.out.println(key);
+            System.out.println(value);
+
+            if (!isCompleted) {
+                player.getInventory().setItem(key, new ItemStack(Material.AIR));
+                isCompleted = true;
+
+            }  else{
+                try {
+                    throw new Exception();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+        });
 
     }
     public String getName(){
